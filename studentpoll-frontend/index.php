@@ -11,6 +11,7 @@
         <div id="buttonframe">
             <h1 data-template="question"></h1>
             <div class="alert alert-info" id="thanks">Danke!</div>
+            <pre data-template="code"></pre>
             <div id="buttons">
                 <div data-role="button-template" class="hidden">
                     <div class="col-md-10" data-template="text"></div>
@@ -22,7 +23,7 @@
         </div>
         <hr />
         <footer>
-            <p>Made with ❤. Soon on GitHub.</p>
+            <p>Made with ❤. Grab it from <a href="https://github.com/mistressofjellyfish/studentpoll">GitHub</a>.</p>
         </footer>
     </div>
 
@@ -43,6 +44,7 @@
 
             cpoll.client.activatePoll = function (poll) {
                 $("[data-template='question']").text(poll.Title);
+                $("[data-template='code']").text(poll.Code);
 
                 for (var i = 0; i < poll.Answers.length; i++) {
                     $t = $template.clone();
@@ -72,7 +74,8 @@
             cpoll.client.display = function (poll) {
 
             };
-$.connection.hub.logging = true;
+
+            $.connection.hub.logging = true;
             $.connection.hub.start();
         });
     </script>

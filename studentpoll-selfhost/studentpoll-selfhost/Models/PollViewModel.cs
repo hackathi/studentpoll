@@ -18,5 +18,6 @@ namespace studentpoll.Models
         public string Title { get; set; }
 
         public List<PollAnswerViewModel> Answers { get; set; }
+        public string Code { get; set; }
     }
 }

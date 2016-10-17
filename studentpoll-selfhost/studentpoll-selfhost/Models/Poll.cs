@@ -15,6 +15,13 @@ namespace studentpoll.Models
 
         public string Title { get; set; }
 
+        public string Code { get; set; }
+        
+        public int TutorGroupId { get; set; }
+
         public virtual ICollection<PollAnswer> Answers { get; set; }
+
+        [ForeignKey("TutorGroupId")]
+        public virtual TutorGroup TutorGroup { get; set; }
     }
 }

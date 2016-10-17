@@ -5,6 +5,7 @@ using System.Web;
 using Microsoft.AspNet.SignalR;
 using studentpoll.Models;
 using System.Threading;
+using System.Configuration;
 
 namespace studentpoll
 {
@@ -12,7 +13,7 @@ namespace studentpoll
     {
         public void Display(int pollid, string token)
         {
-            if (token != "hdjHakshA82ka")
+            if (token != ConfigurationManager.AppSettings["adminkey"])
                 return;
 
 
@@ -41,7 +42,7 @@ namespace studentpoll
 
         public void Activate(int pollid, string token)
         {
-            if (token != "hdjHakshA82ka")
+            if (token != ConfigurationManager.AppSettings["adminkey"])
                 return;
 
             PollContext ctx = new PollContext();
@@ -51,7 +52,8 @@ namespace studentpoll
             PollViewModel pvm = new PollViewModel()
             {
                 Id = p.Id,
-                Title = p.Title
+                Title = p.Title,
+                Code = p.Code
             };
 
             foreach (var answer in p.Answers)
@@ -75,7 +77,7 @@ namespace studentpoll
 
         public void Results(int pollid, string token)
         {
-            if (token != "hdjHakshA82ka")
+            if (token != ConfigurationManager.AppSettings["adminkey"])
                 return;
 
             PollContext ctx = new PollContext();

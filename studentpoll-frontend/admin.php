@@ -9,30 +9,46 @@
 <body>
     <div class="container body-content">
         <h1>Admin</h1>
+<?php
 
-        <div class="col-xs-12">
-            <input type="text" id="token" placeholder="security token" />
+        $con = mysqli_connect("localhost", "root", "", "studentpoll");
+        $res = mysqli_query($con, "SELECT * FROM TutorGroups");
+        $first = -1;
+
+?>
+        <div class="col-md-6">
+            <input type="password" id="token" placeholder="security token" />
+        </div>
+        <div class="col-md-6">
+        <form>
+            <select id="group">
+<?php
+                while($group = mysqli_fetch_assoc($res)) { if($first < 0) $first = $group['Id'];
+                    ?>              <option value="<?=$group['Id']?>"><?=$group['Name']?></option>
+<?php } ?>
+            </select>
+        </form>
         </div>
 
         <div class="polls">
 <?php
-            $con = mysqli_connect("localhost", "root", "", "studentpoll");
+            mysqli_free_result($res);
             $res = mysqli_query($con, "SELECT * FROM Polls");
             while($poll = mysqli_fetch_assoc($res))
             {?>
-                <div class="poll">
+            <div class="poll<?=($poll['Id'] == $first ? "" : ' hidden')?>" data-pollid="<?=$poll['Id']?>">
                     <div class="col-md-6"><?=$poll['Title']?></div>
                     <div class="col-md-2"><button class="btn btn-primary" data-role="abutton" data-pollid="<?=$poll['Id']?>">Aktivieren</button></div>
                     <div class="col-md-2"><button class="btn btn-primary" data-role="dbutton" data-pollid="<?=$poll['Id']?>">Anzeigen</button></div>
                     <div class="col-md-2"><button class="btn btn-primary" data-role="ebutton" data-pollid="<?=$poll['Id']?>">Ergebnisse</button></div>
                 </div>
-<?php  }
+<?php  } mysqli_free_result($res);
 ?>
         </div>
 
         <hr />
         <footer>
-            <p>Made with ❤. Soon on GitHub.</p>
+            <p>Made with ❤. Grab it from <a href="https://github.com/mistressofjellyfish/studentpoll">GitHub</a>.</p>
         </footer>
     </div>
 
@@ -46,6 +62,13 @@
         $(function () {
             $.connection.hub.url = "http://<?=$_SERVER['SERVER_NAME']?>:1337/signalr";
             var poll = $.connection.pollHub;
+
+            $('#group').change(function(e) {
+                // hide everything
+                $('.poll').not('.hidden').addClass('hidden');
+                // show what we want
+                $(".poll[data-pollid='"+this.value+"']").removeClass('hidden');
+            });
 
             $("[data-role='abutton']").click(function (e) {
                 poll.server.activate($(this).data("pollid"), $("#token").val());
@@ -72,9 +95,11 @@
             poll.client.voteOk = function () {
 
             }
-$.connection.hub.logging = true;
+            $.connection.hub.logging = true;
             $.connection.hub.start();
         });
     </script>
 </body>
 </html>
+
+<!-- vim:set et:-->

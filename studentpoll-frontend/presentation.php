@@ -10,6 +10,7 @@
     <div class="container body-content">
         <div id="buttonframe">
             <h1 data-template="question"></h1>
+            <pre data-template="code"></pre>
             <div id="buttons" style="font-size: 18px">
                 <div data-role="button-template" class="hidden">
                     <div class="col-md-10" data-template="text" style="margin-bottom:20px;"></div>
@@ -22,7 +23,7 @@
         </div>
         <hr />
         <footer>
-            <p>Made with ❤. Soon on GitHub.</p>
+            <p>Made with ❤. Grab it from <a href="https://github.com/mistressofjellyfish/studentpoll">GitHub</a>.</p>
         </footer>
     </div>
 
@@ -47,6 +48,7 @@
                 $("#mychart").hide();
                 $("[data-template='resultTitle']").text("");
                 $("[data-template='question']").text(poll.Title);
+                $("[data-template='code']").text(poll.Code);
 
                 for (var i = 0; i < poll.Answers.length; i++) {
                     $t = $template.clone();
@@ -62,6 +64,7 @@
                 $("#buttons").empty();
                 $("[data-template='resultTitle']").text("");
                 $("[data-template='question']").text(poll.Title);
+                $("[data-template='code']").text(poll.Code);
 
                 for (var i = 0; i < poll.Answers.length; i++) {
                     $t = $template.clone();
@@ -75,6 +78,8 @@
             poll.client.showResult = function (result, title) {
                 $("#buttonframe").hide();
                 $("[data-template='resultTitle']").text(title);
+                $("[data-template='question'").text("");
+                $("[data-template='code']").text("");
 
                 chart = new Chart($("#myChart"), {
                     type: 'bar',
@@ -88,9 +93,11 @@
             poll.client.voteOk = function () {
 
             };
-$.connection.hub.logging = true;
+            $.connection.hub.logging = true;
             $.connection.hub.start();
         });
     </script>
 </body>
 </html>
+
+<!-- vim:set et: -->
